@@ -1,19 +1,2 @@
-# week_3_blp_1
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-
-[![Expense Tracker - Flutter](https://img.youtu.be/2zQvhagMU08/0.jpg)](https://youtu.be/2zQvhagMU08)
+Expense Tracker
+[![Expense Tracker - Flutter](https://img.youtu.be/vi/2zQvhagMU08&ab_channel=Down_Falke/0.jpg)](https://www.youtube.com/watch?v=2zQvhagMU08&ab_channel=Down_Falke)
