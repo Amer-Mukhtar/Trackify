@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../Models/expense.dart';
+import '../ViewModel/dbHandler.dart';
 import '../main.dart';
 
 
@@ -11,6 +14,7 @@ class AddExpenseScreen extends StatefulWidget {
 }
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
+  final myDb db = myDb();
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -25,13 +29,19 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     }
 
     final newExpense = Expense(
-      name: enteredName,
+      title: enteredName,
       amount: enteredAmount,
       date: _selectedDate,
       category: _selectedCategory,
+      id: generateSimpleUniqueId(),
     );
-
+    db.insertRecord(newExpense);
     Navigator.of(context).pop(newExpense);
+  }
+  String generateSimpleUniqueId() {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final random = Random().nextInt(100000);
+    return '$timestamp$random';
   }
 
   void _presentDatePicker() {

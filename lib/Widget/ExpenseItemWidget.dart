@@ -12,7 +12,7 @@ class ExpenseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(expense.name,style: TextStyle(color: textWhite),),
+      title: Text(expense.title,style: TextStyle(color: textWhite),),
       subtitle: Text('${expense.amount} - ${expense.category}',style: TextStyle(color: textWhite)),
       trailing: Text(expense.date.toLocal().toString(),style: TextStyle(color: textWhite)),
       onTap: () {

@@ -1,0 +1,2 @@
+C:/Users/Yoga/StudioProjects/Expense-Tracker/android/app/.cxx/Debug/1r513w2g/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Yoga/StudioProjects/Expense-Tracker/android/app/.cxx/Debug/1r513w2g/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:week_3_blp_1/screens/expenseListScreen.dart';
+import 'package:week_3_blp_1/Views/expenseListScreen.dart';
 import '../Models/expense.dart';
 import '../main.dart';
 
@@ -28,7 +28,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.expense.name;
+    _nameController.text = widget.expense.title;
     _amountController.text = widget.expense.amount.toString();
     _selectedDate = widget.expense.date;
     _selectedCategory = widget.expense.category;
@@ -59,7 +59,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
               child: Column(
                 children: [
                   Row(children: [
-                    Icon(Icons.task_alt,color: Colors.white,),Text(' Task: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.name}',style: TextStyle(color: Colors.red,fontSize: 20))
+                    Icon(Icons.task_alt,color: Colors.white,),Text(' Task: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.title}',style: TextStyle(color: Colors.red,fontSize: 20))
                   ],),
                   Row(children: [
                     Icon(Icons.money,color: Colors.white,),Text(' Cost: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.amount}',style: TextStyle(color: Colors.red,fontSize: 20))
@@ -181,10 +181,10 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
               onPressed: () {
                 if (_nameController.text.isNotEmpty && _amountController.text.isNotEmpty) {
                   widget.onEdit(Expense(
-                    name: _nameController.text,
+                    title: _nameController.text,
                     amount: double.parse(_amountController.text),
                     date: _selectedDate,
-                    category: _selectedCategory,
+                    category: _selectedCategory, id:widget.expense.id ,
                   ));
                   Navigator.of(context)..pop()..pop();
                 }
