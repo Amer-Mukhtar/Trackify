@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:week_3_blp_1/Views/expenseListScreen.dart';
 import '../Models/expense.dart';
+import '../ViewModel/dbHandler.dart';
 import '../main.dart';
 
 class ExpenseDetailsScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = '';
-
+  final myDb db = myDb();
   @override
   void initState() {
     super.initState();
@@ -91,7 +92,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                 SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    widget.onDelete();
+                    db.deleteRecord(widget.expense.id);
                     Navigator.pop(context);
                   },
                   child: Text('Delete',style: TextStyle(color: textBlack),),
@@ -180,7 +181,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
               ),
               onPressed: () {
                 if (_nameController.text.isNotEmpty && _amountController.text.isNotEmpty) {
-                  widget.onEdit(Expense(
+                  db.editRecord(Expense(
                     title: _nameController.text,
                     amount: double.parse(_amountController.text),
                     date: _selectedDate,

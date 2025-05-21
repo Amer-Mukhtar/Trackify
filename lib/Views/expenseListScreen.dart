@@ -113,7 +113,6 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('No expenses found.', style: TextStyle(color: Colors.white)));
                 }
-
                 final expenses = snapshot.data!;
                 final filteredExpenses = _selectedCategoryFilter == 'All'
                     ? expenses

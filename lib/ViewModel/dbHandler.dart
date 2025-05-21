@@ -48,9 +48,35 @@ class myDb{
     )).toList();
   }
   Future<void> clearAllExpenses() async {
-    final db = await database;
-    await myDb().clearAllExpenses();
+    var directory = await getDatabasesPath();
+    String path=join(directory,'mydatabase.db');
+    await deleteDatabase(path);
   }
+  Future<void> deleteRecord(String id) async {
+    final db = await database();
+    int count = await db.delete(
+      'expenses',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    assert(count == 1);
+  }
+  Future editRecord(Expense expense)
+  async{
+
+    final db=await database();
+    await db.update('expenses',
+        {
+          'id':expense.id,
+          'title':expense.title,
+          'amount':expense.amount,
+          'date':expense.date.toIso8601String(),
+          'category':expense.category
+        },
+    where: 'id=?',whereArgs: [expense.id]);
+    print('Inserted');
+  }
+
 
 
 }
