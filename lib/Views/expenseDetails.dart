@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:week_3_blp_1/Views/expenseListScreen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Models/expense.dart';
-import '../ViewModel/dbHandler.dart';
+import '../presentation/cubit/expense_cubit.dart';
 import '../main.dart';
 
 class ExpenseDetailsScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = '';
-  final myDb db = myDb();
+
   @override
   void initState() {
     super.initState();
@@ -39,63 +39,48 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(title: Text('Expense Details',style: TextStyle(color: textWhite,fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.black,
-        leading: BackButton(color: Colors.white,),
+      appBar: AppBar(
+        title: Text('Expense Details', style: TextStyle(color: textWhite, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.black,
+        leading: BackButton(color: Colors.white),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             Container(
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                  color: tileColor,
-                  
-                  borderRadius: BorderRadius.circular(30)
+                color: tileColor,
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Column(
                 children: [
-                  Row(children: [
-                    Icon(Icons.task_alt,color: Colors.white,),Text(' Task: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.title}',style: TextStyle(color: Colors.red,fontSize: 20))
-                  ],),
-                  Row(children: [
-                    Icon(Icons.money,color: Colors.white,),Text(' Cost: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.amount}',style: TextStyle(color: Colors.red,fontSize: 20))
-                  ],),
-                  Row(children: [
-                    Icon(Icons.calendar_month,color: Colors.white,),Text(' Date: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${DateFormat('dd MMM yyyy').format(_selectedDate)}',style: TextStyle(color: Colors.red,fontSize: 20))
-                  ],),
-                  Row(children: [
-                    Icon(Icons.category,color: Colors.white,),Text(' Category: ',style: TextStyle(color: textWhite,fontSize: 20)),Text('${widget.expense.category}',style: TextStyle(color: Colors.red,fontSize: 20))
-                  ],),
-
+                  _buildRow(Icons.task_alt, 'Task', widget.expense.title),
+                  _buildRow(Icons.money, 'Cost', widget.expense.amount.toString()),
+                  _buildRow(Icons.calendar_month, 'Date', DateFormat('dd MMM yyyy').format(_selectedDate)),
+                  _buildRow(Icons.category, 'Category', widget.expense.category),
                 ],
               ),
             ),
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red
-                  ),
-                  onPressed: () {
-                    _showEditDialog(context);
-                  },
-                  child: Text('Edit',style: TextStyle(color: textWhite)),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  onPressed: () => _showEditDialog(context),
+                  child: Text('Edit', style: TextStyle(color: textWhite)),
                 ),
                 SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    db.deleteRecord(widget.expense.id);
+                    context.read<ExpenseCubit>().deleteExpense(widget.expense.id);
+                    widget.onDelete(); // Notify parent
                     Navigator.pop(context);
                   },
-                  child: Text('Delete',style: TextStyle(color: textBlack),),
+                  child: Text('Delete', style: TextStyle(color: textBlack)),
                 ),
               ],
             ),
@@ -105,31 +90,50 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
     );
   }
 
+  Widget _buildRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white),
+        Text(' $label: ', style: TextStyle(color: textWhite, fontSize: 20)),
+        Text(value, style: TextStyle(color: Colors.red, fontSize: 20)),
+      ],
+    );
+  }
+
   void _showEditDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.black,
-          title: Text('Edit',style: TextStyle(color: textWhite)),
+          title: Text('Edit', style: TextStyle(color: textWhite)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 style: TextStyle(color: Colors.white),
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Task',labelStyle:TextStyle(color: textWhite)),
+                decoration: InputDecoration(
+                  labelText: 'Task',
+                  labelStyle: TextStyle(color: textWhite),
+                ),
               ),
               TextField(
                 style: TextStyle(color: Colors.white),
                 controller: _amountController,
-                decoration: InputDecoration(labelText: 'Cost',labelStyle:TextStyle(color: textWhite)),
+                decoration: InputDecoration(
+                  labelText: 'Cost',
+                  labelStyle: TextStyle(color: textWhite),
+                ),
                 keyboardType: TextInputType.number,
               ),
               Row(
                 children: [
                   Expanded(
-                    child: Text('Date: ${_selectedDate.toLocal()}'.split(' ')[0],style: TextStyle(color: textWhite)),
+                    child: Text(
+                      'Date: ${DateFormat('dd MMM yyyy').format(_selectedDate)}',
+                      style: TextStyle(color: textWhite),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -139,19 +143,21 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                         firstDate: DateTime(2005),
                         lastDate: DateTime(2101),
                       );
-                      if (picked != null && picked != _selectedDate) {
+                      if (picked != null) {
                         setState(() {
                           _selectedDate = picked;
                         });
                       }
                     },
-                    child: Text('Select date',style: TextStyle(color: textBlack)),
+                    child: Text('Select date', style: TextStyle(color: textBlack)),
                   ),
                 ],
               ),
-              Theme(data: ThemeData.dark(),
+              Theme(
+                data: ThemeData.dark(),
                 child: DropdownButton<String>(
                   value: _selectedCategory,
+                  dropdownColor: Colors.black,
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedCategory = newValue!;
@@ -161,7 +167,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value,style: TextStyle(color: textWhite)),
+                      child: Text(value, style: TextStyle(color: textWhite)),
                     );
                   }).toList(),
                 ),
@@ -170,27 +176,27 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel',style: TextStyle(color: textWhite)),
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel', style: TextStyle(color: textWhite)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () {
                 if (_nameController.text.isNotEmpty && _amountController.text.isNotEmpty) {
-                  db.editRecord(Expense(
+                  final updatedExpense = Expense(
+                    id: widget.expense.id,
                     title: _nameController.text,
                     amount: double.parse(_amountController.text),
                     date: _selectedDate,
-                    category: _selectedCategory, id:widget.expense.id ,
-                  ));
-                  Navigator.of(context)..pop()..pop();
+                    category: _selectedCategory,
+                  );
+
+                  context.read<ExpenseCubit>().editExpense(updatedExpense);
+                  widget.onEdit(updatedExpense); // Notify parent
+                  Navigator.pop(context); // Close dialog
                 }
               },
-              child: Text('Save',style: TextStyle(color: textWhite)),
+              child: Text('Save', style: TextStyle(color: textWhite)),
             ),
           ],
         );

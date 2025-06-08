@@ -1,0 +1,2 @@
+C:/Users/Yoga/StudioProjects/Expense-Tracker/android/app/.cxx/Debug/y2m1f2m5/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Yoga/StudioProjects/Expense-Tracker/android/app/.cxx/Debug/y2m1f2m5/x86_64/CMakeFiles/rebuild_cache.dir
