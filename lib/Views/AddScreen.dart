@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../Models/expense.dart';
 import '../presentation/cubit/expense_cubit.dart';
-import '../presentation/cubit/expense_state.dart';
 
 class AddExpenseScreen extends StatefulWidget {
+  const AddExpenseScreen({super.key});
+
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();
 }
@@ -29,7 +30,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
     if (enteredName.isEmpty || enteredAmount == null || enteredAmount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter valid name and amount")),
+        const SnackBar(content: Text("Please enter valid name and amount")),
       );
       return;
     }
@@ -66,8 +67,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        leading: BackButton(color: Colors.white),
-        title: Text(
+        leading: const BackButton(color: Colors.white),
+        title: const Text(
           'Add Expense',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -79,18 +80,18 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Task/Activity',
                 labelStyle: TextStyle(color: Colors.white),
               ),
             ),
             TextField(
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Cost',
                 labelStyle: TextStyle(color: Colors.white),
               ),
@@ -100,12 +101,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 Expanded(
                   child: Text(
                     'Picked Date: ${DateFormat('dd MMM yyyy').format(_selectedDate)}',
-                    style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+                    style: const TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
                   ),
                 ),
                 TextButton(
                   onPressed: _presentDatePicker,
-                  child: Text('Choose Date', style: TextStyle(color: Colors.white)),
+                  child: const Text('Choose Date', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -118,8 +119,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     dropdownColor: Colors.black,
                     items: ['Grocery', 'School', 'Entertainment', 'Bills', 'Others']
                         .map((label) => DropdownMenuItem(
-                      child: Text(label, style: TextStyle(color: Colors.white)),
                       value: label,
+                      child: Text(label, style: const TextStyle(color: Colors.white)),
                     ))
                         .toList(),
                     onChanged: (value) {
@@ -129,11 +130,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     },
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   onPressed: _submitExpense,
-                  child: Text('Add', style: TextStyle(color: Colors.white)),
+                  child: const Text('Add', style: TextStyle(color: Colors.white)),
                 ),
               ],
             )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:week_3_blp_1/presentation/cubit/expense_cubit.dart';
+import 'package:week_3_blp_1/theme/theme.dart';
 import './Views/expenseListScreen.dart';
 import 'ViewModel/dbHandler.dart';
 import 'data/repositories/repositories.dart';
@@ -12,7 +13,7 @@ void main() {
   final db = myDb();
   final repository = ExpenseRepository(db);
   runApp(BlocProvider(create: (_)=>ExpenseCubit(repository)..loadExpenses(),
-      child: MyApp()));
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,9 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: AppTheme.lightTheme.theme,
+      darkTheme: AppTheme.darkTheme.theme,
+      themeMode:ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracker',
-      home: ExpenseListScreen(),
+      home: const ExpenseListScreen(),
     );
   }
 }

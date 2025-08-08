@@ -8,7 +8,7 @@ class LightTheme extends AppTheme{
 
   ThemeData get theme => ThemeData(
     extensions: const [
-      AppColors(
+      CustomAppColors(
         primaryBackground: Colors.white ,
         primarySurface: Colors.grey,
         primarySurfaceHighlighted: Colors.black,

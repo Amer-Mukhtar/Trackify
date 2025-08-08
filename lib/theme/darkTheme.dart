@@ -9,7 +9,7 @@ class DarkTheme extends AppTheme{
   // TODO: implement theme
   ThemeData get theme =>ThemeData(
     extensions: const [
-      AppColors(
+      CustomAppColors(
           primaryBackground: Colors.black ,
           primarySurface: Colors.blueGrey,
           primarySurfaceHighlighted: Colors.black,

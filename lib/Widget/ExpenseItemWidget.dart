@@ -7,7 +7,7 @@ import '../main.dart';
 class ExpenseItem extends StatelessWidget {
   final Expense expense;
 
-  ExpenseItem(this.expense);
+  const ExpenseItem(this.expense, {super.key});
 
   @override
   Widget build(BuildContext context) {
