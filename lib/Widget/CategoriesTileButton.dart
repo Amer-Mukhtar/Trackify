@@ -5,14 +5,12 @@ import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 
 class CategoryTileButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final IconData icon;
   final String descriptionTxt;
   final String titleTxt;
 
   const CategoryTileButton({
     super.key,
     required this.onPressed,
-    required this.icon,
     required this.descriptionTxt,
     required this.titleTxt,
   });

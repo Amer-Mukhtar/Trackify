@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../Widget/CategoriesTileButton.dart';
 import '../Widget/LineGraph.dart';
 import '../Widget/TextButton.dart';
+import '../presentation/cubit/expense_cubit.dart';
+import 'AddScreen.dart';
+import 'ExpenseListScreen.dart';
 
-class ExpenseListScreen extends StatefulWidget {
-  const ExpenseListScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<ExpenseListScreen> createState() => _ExpenseListScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ExpenseListScreenState extends State<ExpenseListScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final tiles = [
-      {'label': 'Add Expense', 'icon': Icons.add, 'onPressed': () {}},
-      {'label': 'View Stats', 'icon': Icons.bar_chart, 'onPressed': () {}},
-      {'label': 'Reports', 'icon': Icons.receipt, 'onPressed': () {}},
-      {'label': 'Settings', 'icon': Icons.settings, 'onPressed': () {}},
+      {'label': 'See All Expenses',  'onPressed': () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => ExpenseListScreen()),
+        ).then((result) {
+          if (result != null) {
+            context.read<ExpenseCubit>().loadExpenses();
+          }
+        });
+      }},
+      {'label': 'View Stats',  'onPressed': () {}},
+      {'label': 'Reports',  'onPressed': () {}},
+      {'label': 'Settings',  'onPressed': () {}},
     ];
     return Scaffold(
       bottomNavigationBar: HorizontalTextButton( text: 'Add New Expense',
-      onpressed: () {  },
+      onpressed: () {  Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => AddExpenseScreen()),
+      ).then((result) {
+        if (result != null) {
+          context.read<ExpenseCubit>().loadExpenses();
+        }
+      });
+        },
 
       ),
       backgroundColor: context.appColors.primarySurface,
@@ -90,8 +109,7 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                 itemBuilder: (context,index){
                   final tile = tiles[index];
                   return CategoryTileButton(
-                    onPressed: () {  },
-                    icon: tile['icon'] as IconData,
+                    onPressed: tile['onPressed'] as VoidCallback,
                     descriptionTxt: 'here is the desciption lovely isnt itjjjf?',
                     titleTxt: tile['label']as String,
                   );

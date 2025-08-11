@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:week_3_blp_1/presentation/cubit/expense_cubit.dart';
 import 'package:week_3_blp_1/theme/theme.dart';
-import './Views/expenseListScreen.dart';
+import './Views/HomeScreen.dart';
 import 'ViewModel/dbHandler.dart';
 import 'data/repositories/repositories.dart';
 Color textWhite=Colors.white;
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           themeMode:ThemeMode.system,
           debugShowCheckedModeBanner: false,
           title: 'Expense Tracker',
-          home: const ExpenseListScreen(),
+          home: const HomeScreen(),
         );
       },
     );
