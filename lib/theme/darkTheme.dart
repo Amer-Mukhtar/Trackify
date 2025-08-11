@@ -11,9 +11,9 @@ class DarkTheme extends AppTheme{
     extensions: const [
       CustomAppColors(
           primaryBackground: Colors.black ,
-          primarySurface: Colors.blueGrey,
+          primarySurface: Color(0xFFDEDFE2),
           primarySurfaceHighlighted: Colors.black,
-          onPrimary: Colors.redAccent
+          onPrimary: Color(0xFFFF7664)
       ),
 
     ],
