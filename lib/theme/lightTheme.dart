@@ -8,11 +8,11 @@ class LightTheme extends AppTheme{
 
   ThemeData get theme => ThemeData(
     extensions: const [
-      AppColors(
+      CustomAppColors(
         primaryBackground: Colors.white ,
-        primarySurface: Colors.grey,
+        primarySurface: Color(0xFFDEDFE2),
         primarySurfaceHighlighted: Colors.black,
-        onPrimary: Colors.redAccent
+        onPrimary: Color(0xFFFF7664)
       ),
 
     ],

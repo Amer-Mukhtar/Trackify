@@ -10,7 +10,7 @@ class ExpenseDetailsScreen extends StatefulWidget {
   final Function(Expense) onEdit;
   final Function() onDelete;
 
-  ExpenseDetailsScreen({
+  const ExpenseDetailsScreen({super.key, 
     required this.expense,
     required this.onEdit,
     required this.onDelete,
@@ -42,7 +42,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
       appBar: AppBar(
         title: Text('Expense Details', style: TextStyle(color: textWhite, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
-        leading: BackButton(color: Colors.white),
+        leading: const BackButton(color: Colors.white),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
@@ -50,8 +50,8 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
                 color: tileColor,
                 borderRadius: BorderRadius.circular(30),
@@ -73,7 +73,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                   onPressed: () => _showEditDialog(context),
                   child: Text('Edit', style: TextStyle(color: textWhite)),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
                     context.read<ExpenseCubit>().deleteExpense(widget.expense.id);
@@ -95,7 +95,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
       children: [
         Icon(icon, color: Colors.white),
         Text(' $label: ', style: TextStyle(color: textWhite, fontSize: 20)),
-        Text(value, style: TextStyle(color: Colors.red, fontSize: 20)),
+        Text(value, style: const TextStyle(color: Colors.red, fontSize: 20)),
       ],
     );
   }
@@ -111,7 +111,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: 'Task',
@@ -119,7 +119,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                 ),
               ),
               TextField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: _amountController,
                 decoration: InputDecoration(
                   labelText: 'Cost',

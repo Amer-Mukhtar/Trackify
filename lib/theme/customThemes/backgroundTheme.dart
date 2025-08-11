@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class AppColors extends ThemeExtension<AppColors> {
+class CustomAppColors extends ThemeExtension<CustomAppColors> {
   final Color primaryBackground;
   final Color primarySurface;
   final Color primarySurfaceHighlighted;
   final Color onPrimary;
 
-  const AppColors({
+  const CustomAppColors({
     required this.primaryBackground,
     required this.primarySurface,
     required this.primarySurfaceHighlighted,
@@ -15,13 +15,13 @@ class AppColors extends ThemeExtension<AppColors> {
   });
 
   @override
-  AppColors copyWith({
+  CustomAppColors copyWith({
     Color? primaryBackground,
     Color? primarySurface,
     Color? primarySurfaceHighlighted,
     Color? onPrimary,
   }) {
-    return AppColors(
+    return CustomAppColors(
       primaryBackground: primaryBackground ?? this.primaryBackground,
       primarySurface: primarySurface ?? this.primarySurface,
       primarySurfaceHighlighted: primarySurfaceHighlighted ?? this.primarySurfaceHighlighted,
@@ -30,9 +30,9 @@ class AppColors extends ThemeExtension<AppColors> {
   }
 
   @override
-  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
-    if (other is! AppColors) return this;
-    return AppColors(
+  CustomAppColors lerp(ThemeExtension<CustomAppColors>? other, double t) {
+    if (other is! CustomAppColors) return this;
+    return CustomAppColors(
       primaryBackground: Color.lerp(primaryBackground, other.primaryBackground, t)!,
       primarySurface: Color.lerp(primarySurface, other.primarySurface, t)!,
       primarySurfaceHighlighted: Color.lerp(primarySurfaceHighlighted, other.primarySurfaceHighlighted, t)!,

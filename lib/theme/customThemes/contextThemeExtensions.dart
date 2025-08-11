@@ -3,7 +3,7 @@ import 'backgroundTheme.dart';
 
 
 extension ThemeContextExtensions on BuildContext {
-  AppColors get appColors => Theme.of(this).extension<AppColors>()!;
+  CustomAppColors get appColors => Theme.of(this).extension<CustomAppColors>()!;
   ThemeData get theme => Theme.of(this);
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
   TextTheme get textStyles => Theme.of(this).textTheme;

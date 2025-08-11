@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../presentation/cubit/expense_cubit.dart';
 import '../presentation/cubit/expense_state.dart';
-import 'AddScreen.dart';
 import 'expenseDetails.dart';
 import '../main.dart';
 
@@ -17,15 +16,6 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
   String _selectedCategoryFilter = 'All';
   final List<String> _categories = ['All', 'Grocery', 'School', 'Entertainment', 'Bills', 'Others'];
 
-  void _startAddNewExpense(BuildContext ctx) {
-    Navigator.of(ctx).push(
-      MaterialPageRoute(builder: (_) => AddExpenseScreen()),
-    ).then((result) {
-      if (result != null) {
-        context.read<ExpenseCubit>().loadExpenses();
-      }
-    });
-  }
 
   void _showCategoryDialog() {
     showDialog(
@@ -64,22 +54,6 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        height: 50,
-        width: 80,
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.redAccent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Center(
-          child: IconButton(
-            onPressed: () => _startAddNewExpense(context),
-            icon: const Icon(CupertinoIcons.add, color: Colors.white),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.black,
       appBar: AppBar(
         actions: [
