@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
+import '../ViewModel/dbHandler.dart';
 import '../Widget/CategoriesTileButton.dart';
 import '../Widget/LineGraph.dart';
 import '../Widget/TextButton.dart';
@@ -17,7 +17,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double totalExpense = 0.0;
   @override
+  @override
+  void initState() {
+    super.initState();
+    _loadTotalExpense();
+  }
+  Future<void> _loadTotalExpense() async {
+    final db = myDb();
+    double total = await db.getTotalExpenseAmount();
+    setState(() {
+      totalExpense = total;
+    });
+  }
   Widget build(BuildContext context) {
     final tiles = [
       {'label': 'See All Expenses',  'onPressed': () {
@@ -70,12 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           SizedBox(height: 10,),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.symmetric(horizontal: 5),
             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
             height: 180,width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(20)
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 250,
                   ),
                 ),
-                const Text('\$4,500.98 ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
+                Text('\$$totalExpense',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
               ],
             ),
           ),

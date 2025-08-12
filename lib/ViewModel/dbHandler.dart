@@ -76,6 +76,17 @@ class myDb{
     where: 'id=?',whereArgs: [expense.id]);
     print('Inserted');
   }
+  Future<double> getTotalExpenseAmount() async {
+    final db = await database();
+    final result = await db.rawQuery('SELECT SUM(amount) as total FROM expenses');
+
+    double total = result.first['total'] == null
+        ? 0.0
+        : (result.first['total'] as num).toDouble();
+
+    return total;
+  }
+
 
 
 
