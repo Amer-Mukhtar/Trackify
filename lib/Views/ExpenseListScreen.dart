@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
+import '../Widget/IconButton.dart';
 import '../presentation/cubit/expense_cubit.dart';
 import '../presentation/cubit/expense_state.dart';
-import 'expenseDetails.dart';
+import 'ExpenseDetails.dart';
 import '../main.dart';
 
 class ExpenseListScreen extends StatefulWidget {
@@ -54,8 +56,18 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: context.appColors.primarySurface,
       appBar: AppBar(
+        leadingWidth: 50,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: CustomIconButton(
+            color: Colors.white,
+            icon: CupertinoIcons.arrow_left,
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ),
+          backgroundColor: context.appColors.primarySurface,
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list, color: Colors.white),
@@ -66,15 +78,7 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
             onPressed: _clearExpenses,
           ),
         ],
-        backgroundColor: Colors.black,
-        title: Text(
-          'Expense Tracker',
-          style: TextStyle(
-            color: textWhite,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
-        ),
+
       ),
       body: SafeArea(
         child: BlocBuilder<ExpenseCubit, ExpenseState>(
@@ -98,9 +102,9 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                 children: [
                   SizedBox(height: 10),
                   Text(
-                    'PKR ${totalAmount.toStringAsFixed(2)}',
+                    '\$ ${totalAmount.toStringAsFixed(2)}',
                     style: TextStyle(
-                      color: Colors.red,
+                      color: Colors.black,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
