@@ -1,8 +1,12 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../Models/expense.dart';
+import '../Widget/IconButton.dart';
+import '../Widget/image.dart';
 import '../presentation/cubit/expense_cubit.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -65,35 +69,91 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: context.appColors.primarySurface,
       appBar: AppBar(
-        leading: const BackButton(color: Colors.white),
+        leadingWidth: 50,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: CustomIconButton(
+            color: Colors.white,
+            icon: CupertinoIcons.arrow_left,
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ),
         title: const Text(
           'Add Expense',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: context.appColors.primarySurface,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    //color: context.appColors.primaryBackground,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  child:Image.asset('assets/images/placeholder.png'),
+                ),
+                Positioned(
+                  top: 220,left: 295,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: context.appColors.onPrimary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: InkWell(
+                      onTap: (){imageSheet(context);},
+                      child: Icon(CupertinoIcons.plus,
+                        size: 25,
+                        color:Colors.white,),
+                    ),
+                  )
+                )
+              ],
+            ),
+            SizedBox(height: 20,),
             TextField(
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: 'Task/Activity',
-                labelStyle: TextStyle(color: Colors.white),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12)
+                ),),
+                labelText: 'Title',
+                labelStyle: TextStyle(color: Colors.black),
               ),
             ),
+            SizedBox(height: 20,),
+            const TextField(
+              style: TextStyle(color: Colors.black),
+              controller: null,
+              maxLines: null,
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                labelText: 'Description',
+              ),
+            ),
+
+            SizedBox(height: 20,),
             TextField(
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
               controller: _amountController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Cost',
-                labelStyle: TextStyle(color: Colors.white),
               ),
             ),
             Row(
@@ -101,12 +161,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 Expanded(
                   child: Text(
                     'Picked Date: ${DateFormat('dd MMM yyyy').format(_selectedDate)}',
-                    style: const TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+                    style: const TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
                   ),
                 ),
                 TextButton(
                   onPressed: _presentDatePicker,
-                  child: const Text('Choose Date', style: TextStyle(color: Colors.white)),
+                  child: const Text('Choose Date', style: TextStyle(color: Colors.black)),
                 ),
               ],
             ),
@@ -116,11 +176,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   data: ThemeData.dark(),
                   child: DropdownButton<String>(
                     value: _selectedCategory,
-                    dropdownColor: Colors.black,
+                    dropdownColor: Colors.white,
                     items: ['Grocery', 'School', 'Entertainment', 'Bills', 'Others']
                         .map((label) => DropdownMenuItem(
                       value: label,
-                      child: Text(label, style: const TextStyle(color: Colors.white)),
+                      child: Text(label, style: const TextStyle(color: Colors.black)),
                     ))
                         .toList(),
                     onChanged: (value) {

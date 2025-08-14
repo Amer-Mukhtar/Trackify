@@ -7,6 +7,19 @@ class LightTheme extends AppTheme{
   @override
 
   ThemeData get theme => ThemeData(
+    inputDecorationTheme: const InputDecorationTheme(
+      alignLabelWithHint: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      labelStyle: TextStyle(color: Colors.black),
+    ),
+
     extensions: const [
       CustomAppColors(
         primaryBackground: Colors.white ,

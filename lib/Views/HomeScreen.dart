@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../ViewModel/dbHandler.dart';
 import '../Widget/CategoriesTileButton.dart';
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 250,
                   ),
                 ),
-                Text('\$$totalExpense',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
+                Text('\$ ${NumberFormat('#,##0.00').format(totalExpense)}',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
               ],
             ),
           ),

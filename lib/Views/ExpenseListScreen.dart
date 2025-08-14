@@ -102,35 +102,41 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                 children: [
                   SizedBox(height: 10),
                   Text(
-                    '\$ ${totalAmount.toStringAsFixed(2)}',
+                    '\$ ${NumberFormat('#,##0.00').format(totalAmount)}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 30),
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 25),
-                      decoration: const BoxDecoration(
-                        color: tileColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40),
-                        ),
-                      ),
-                      child: ListView.builder(
-                        itemCount: expenses.length,
-                        itemBuilder: (context, index) {
-                          final expense = expenses[index];
-                          return ListTile(
-                            leading: Icon(CupertinoIcons.dot_square_fill, color: Colors.red),
-                            title: Text(expense.title, style: TextStyle(color: textWhite, fontWeight: FontWeight.bold)),
+                    child: ListView.builder(
+                      itemCount: expenses.length,
+                      itemBuilder: (context, index) {
+                        final expense = expenses[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: context.appColors.primaryBackground,
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2),
+                          child: ListTile(
+                            leading: Container(
+                             decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                             ),
+                              child: Image.asset(
+                                'assets/images/placeholder.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                            title: Text(expense.title, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             subtitle: Text('PKR ${expense.amount.toStringAsFixed(2)}', style: TextStyle(color: Colors.red[200])),
                             trailing: Text(
                               '${expense.category}\n${DateFormat('dd MMM yyyy').format(expense.date)}',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               textAlign: TextAlign.right,
                             ),
                             onTap: () async {
@@ -152,9 +158,9 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                                 context.read<ExpenseCubit>().loadExpenses();
                               }
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
