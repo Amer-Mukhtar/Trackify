@@ -8,6 +8,18 @@ class DarkTheme extends AppTheme{
   @override
   // TODO: implement theme
   ThemeData get theme =>ThemeData(
+    inputDecorationTheme: const InputDecorationTheme(
+      alignLabelWithHint: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      labelStyle: TextStyle(color: Colors.white),
+    ),
     extensions: const [
       CustomAppColors(
           primaryBackground: Colors.black ,

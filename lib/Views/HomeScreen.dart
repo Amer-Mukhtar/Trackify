@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:week_3_blp_1/Views/GoalsScreen.dart';
+import 'package:week_3_blp_1/Views/StatsScreen.dart';
 import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../ViewModel/dbHandler.dart';
 import '../Widget/CategoriesTileButton.dart';
@@ -9,6 +11,7 @@ import '../Widget/TextButton.dart';
 import '../presentation/cubit/expense_cubit.dart';
 import 'AddScreen.dart';
 import 'ExpenseListScreen.dart';
+import 'SettingsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,9 +46,15 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         });
       }},
-      {'label': 'View Stats',  'onPressed': () {}},
-      {'label': 'Reports',  'onPressed': () {}},
-      {'label': 'Settings',  'onPressed': () {}},
+      {'label': 'View Stats',  'onPressed': () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>StatsScreen()));
+      }},
+      {'label': 'Goals',  'onPressed': () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>GoalsScreen()));
+      }},
+      {'label': 'Settings',  'onPressed': () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen()));
+      }},
     ];
     return Scaffold(
       bottomNavigationBar: HorizontalTextButton( text: 'Add New Expense',

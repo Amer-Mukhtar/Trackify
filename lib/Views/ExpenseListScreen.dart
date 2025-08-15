@@ -69,14 +69,22 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
         ),
           backgroundColor: context.appColors.primarySurface,
         actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list, color: Colors.white),
-            onPressed: _showCategoryDialog,
-          ),
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.white),
-            onPressed: _clearExpenses,
-          ),
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(50)),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.filter_list, color: Colors.black),
+                  onPressed: _showCategoryDialog,
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete, color: Colors.black),
+                  onPressed: _clearExpenses,
+                ),
+              ],
+            ),
+          )
         ],
 
       ),
