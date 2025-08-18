@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../Models/expense.dart';
-import '../presentation/cubit/expense_cubit.dart';
-import '../main.dart';
+import '../../Models/expense.dart';
+import '../../main.dart';
+import '../../presentation/cubit/expense_cubit.dart';
 
 class ExpenseDetailsScreen extends StatefulWidget {
   final Expense expense;

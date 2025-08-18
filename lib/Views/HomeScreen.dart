@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:week_3_blp_1/Views/GoalsScreen.dart';
-import 'package:week_3_blp_1/Views/StatsScreen.dart';
+import 'package:week_3_blp_1/Views/Goals/GoalsScreen.dart';
+import 'package:week_3_blp_1/Views/Statistics/StatsScreen.dart';
 import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../ViewModel/dbHandler.dart';
 import '../Widget/CategoriesTileButton.dart';
 import '../Widget/LineGraph.dart';
 import '../Widget/TextButton.dart';
 import '../presentation/cubit/expense_cubit.dart';
-import 'AddScreen.dart';
-import 'ExpenseListScreen.dart';
-import 'SettingsScreen.dart';
+import 'Expense/AddScreen.dart';
+import 'Expense/ExpenseListScreen.dart';
+import 'Settings/SettingsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
         },
-
       ),
       backgroundColor: context.appColors.primarySurface,
       appBar: AppBar(
