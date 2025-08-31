@@ -8,10 +8,10 @@ class myDb{
   Future<Database> database()
   async{
     var directory = await getDatabasesPath();
-    String path=join(directory,'mydatabase.db');
+    String path=join(directory,'mydb.db');
     _database=await openDatabase(path,version: 1,onCreate: (db, version) {
       db.execute(
-        'CREATE Table expenses(id TEXT PRIMARY KEY ,title TEXT,amount INTEGER,date TEXT,category TEXT)'
+        'CREATE Table expenses(id TEXT PRIMARY KEY ,title TEXT,description TEXT,imgUrl TEXT,amount INTEGER,date TEXT,category TEXT)'
       );
     },);
 
@@ -26,11 +26,11 @@ class myDb{
         {
           'id':expense.id,
       'title':expense.title,
+          'description': expense.description,
       'amount':expense.amount,
       'date':expense.date.toIso8601String(),
       'category':expense.category
     });
-    print('Inserted');
   }
 
   Future<List<Expense>> getExpenses() async {
@@ -44,12 +44,12 @@ class myDb{
             ? (map['amount'] as int).toDouble()
             : map['amount'] as double,
       date: DateTime.parse(map['date']),
-      category: map['category'],
+      category: map['category'], description: map['description'], imageUrl: map['imageUrl'],
     )).toList();
   }
   Future<void> clearAllExpenses() async {
     var directory = await getDatabasesPath();
-    String path=join(directory,'mydatabase.db');
+    String path=join(directory,'mydb.db');
     await deleteDatabase(path);
   }
   Future<void> deleteRecord(String id) async {

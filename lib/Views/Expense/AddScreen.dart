@@ -20,8 +20,10 @@ class AddExpenseScreen extends StatefulWidget {
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
+  final _desciptionController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = 'School';
+  String url ='';
 
   String generateSimpleUniqueId() {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -45,7 +47,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       amount: enteredAmount,
       date: _selectedDate,
       category: _selectedCategory,
-      id: generateSimpleUniqueId(),
+      id: generateSimpleUniqueId(), description: _desciptionController.text, imageUrl: '',
     );
 
     context.read<ExpenseCubit>().addExpense(newExpense);
@@ -66,6 +68,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +123,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: InkWell(
-                        onTap: (){imageSheet(context);},
+                        onTap: ()
+                        {imageSheet(context,);},
                         child: Icon(CupertinoIcons.plus,
                           size: 25,
                           color:Colors.white,),
@@ -134,17 +138,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller: _nameController,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)
-                  ),),
                   labelText: 'Title',
-                  labelStyle: TextStyle(color: Colors.black),
                 ),
               ),
               SizedBox(height: 20,),
-              const TextField(
+               TextField(
                 style: TextStyle(color: Colors.black),
-                controller: null,
+                controller: _desciptionController,
                 maxLines: null,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(

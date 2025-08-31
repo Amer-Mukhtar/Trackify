@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future _pickImageFromGallery() async {
   final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -13,6 +16,19 @@ Future _pickImageFromGallery() async {
 Future _pickImageFromCamera() async {
   final returnedImage = await ImagePicker().pickImage(source: ImageSource.camera);
   if (returnedImage != null) {
+  }
+}
+
+Future saveLocally(XFile img) async {
+  try{
+    final directory = await getApplicationDocumentsDirectory();
+    final String fileName =  basename(img.path);
+    final String localPath='${directory.path}/$fileName';
+    final File lcoalImaga= await File(img.path).copy(localPath);
+  }
+
+  catch(e){
+
   }
 }
 

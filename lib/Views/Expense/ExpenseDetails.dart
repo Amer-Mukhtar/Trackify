@@ -188,7 +188,7 @@ class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
                     title: _nameController.text,
                     amount: double.parse(_amountController.text),
                     date: _selectedDate,
-                    category: _selectedCategory,
+                    category: _selectedCategory, description: '', imageUrl: '',
                   );
 
                   context.read<ExpenseCubit>().editExpense(updatedExpense);

@@ -13,6 +13,8 @@ class AddGoalScreen extends StatefulWidget {
 }
 
 class _AddGoalScreenState extends State<AddGoalScreen> {
+  final TitleController = TextEditingController();
+  final DescripController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +36,30 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
         ),
         backgroundColor: context.appColors.primarySurface,
       ),
-      body: Column(
-        children: [
-
-        ],
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        child: Column(
+          children: [
+            TextField(
+              style: const TextStyle(color: Colors.black),
+              controller: TitleController,
+              decoration: const InputDecoration(
+                labelText: 'Title',
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextField(
+              maxLines: null,
+              style: const TextStyle(color: Colors.black),
+              controller: DescripController,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
