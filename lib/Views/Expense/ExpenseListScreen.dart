@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -134,9 +136,17 @@ class _ExpenseListScreenState extends State<ExpenseListScreen> {
                              decoration: BoxDecoration(
                                shape: BoxShape.circle,
                              ),
-                              child: Image.asset(
-                                'assets/images/placeholder.png',
-                                fit: BoxFit.cover,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(3),
+                                child: expense.imageUrl.isEmpty
+                                    ? Image.asset(
+                                  'assets/images/placeholder.png',
+                                  fit: BoxFit.fill,
+                                )
+                                    : Image.file(
+                                  File(expense.imageUrl),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
 

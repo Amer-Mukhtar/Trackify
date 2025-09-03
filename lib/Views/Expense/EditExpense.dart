@@ -11,19 +11,22 @@ import '../../Widget/TextButton.dart';
 import '../../Widget/image.dart';
 import '../../presentation/cubit/expense_cubit.dart';
 
-class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({super.key});
+class EditExpenseScreen extends StatefulWidget
+{
+  final Expense expense;  final Function(Expense) onEdit;
+
+  const EditExpenseScreen({super.key, required this.expense, required this.onEdit});
 
   @override
-  _AddExpenseScreenState createState() => _AddExpenseScreenState();
+  _EditExpenseScreenState createState() => _EditExpenseScreenState();
 }
 
-class _AddExpenseScreenState extends State<AddExpenseScreen> {
-  final _nameController = TextEditingController();
-  final _amountController = TextEditingController();
-  final _desciptionController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
-  String _selectedCategory = 'School';
+class _EditExpenseScreenState extends State<EditExpenseScreen> {
+  late var TitleController = TextEditingController();
+  late var AmountController = TextEditingController();
+  late var DesciptionController = TextEditingController();
+  DateTime SelectedDate = DateTime.now();
+  String SelectedCategory = 'School';
   String url ='';
   String generateSimpleUniqueId() {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -34,39 +37,51 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   void _presentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: SelectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
       if (pickedDate != null) {
         setState(() {
-          _selectedDate = pickedDate;
+          SelectedDate = pickedDate;
         });
       }
     });
   }
-
+  @override
+  void initState() {
+    super.initState();
+    SelectedDate=widget.expense.date;
+    url=widget.expense.imageUrl;
+    TitleController = TextEditingController(text: widget.expense.title);
+    AmountController = TextEditingController(
+        text: widget.expense.amount.toString());
+    DesciptionController = TextEditingController(
+        text: widget.expense.description);
+    SelectedDate = widget.expense.date;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.appColors.primarySurface,
-      bottomNavigationBar: HorizontalTextButton( text: 'Add Expense',
-        onpressed: () {
-          final enteredName = _nameController.text;
-          final enteredAmount = double.tryParse(_amountController.text);
-          final newExpense = Expense(
-            title: enteredName,
-            amount: enteredAmount!,
-            date: _selectedDate,
-            category: _selectedCategory,
-            id: generateSimpleUniqueId(), description: _desciptionController.text, imageUrl: url,
-          );
-          context.read<ExpenseCubit>().addExpense(newExpense);
-          setState(() {
+      bottomNavigationBar: HorizontalTextButton( text: 'Edit Expense',
+          onpressed: () {
+            final enteredName = TitleController.text;
+            final enteredAmount = double.tryParse(AmountController.text);
+            final newExpense = Expense(
+              title: enteredName,
+              amount: enteredAmount!,
+              date: SelectedDate,
+              category: SelectedCategory,
+              id: generateSimpleUniqueId(), description: DesciptionController.text, imageUrl: url,
+            );
+            context.read<ExpenseCubit>().editExpense(newExpense);
+            widget.onEdit(newExpense); // Notify parent
+            setState(() {
 
-          });
-          Navigator.of(context).pop();
-        }),
+            });
+            Navigator.of(context).pop();
+          }),
       appBar: AppBar(
         leadingWidth: 50,
         leading: Padding(
@@ -78,7 +93,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           ),
         ),
         title: const Text(
-          'Add Expense',
+          'Edit Expense',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: context.appColors.primarySurface,
@@ -113,49 +128,49 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 220,left: 295,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: context.appColors.onPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: InkWell(
-                        onTap: ()
-                        async {url =(await imageSheet(context))!;
+                      top: 220,left: 295,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: context.appColors.onPrimary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: InkWell(
+                          onTap: ()
+                          async {url =(await imageSheet(context))!;
                           setState(() {
 
                           });},
-                        child: Icon(CupertinoIcons.plus,
-                          size: 25,
-                          color:Colors.white,),
-                      ),
-                    )
+                          child: Icon(CupertinoIcons.plus,
+                            size: 25,
+                            color:Colors.white,),
+                        ),
+                      )
                   )
                 ],
               ),
               SizedBox(height: 20,),
               TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: _nameController,
+                controller: TitleController,
                 decoration: const InputDecoration(
                   labelText: 'Title',
                 ),
               ),
               SizedBox(height: 20,),
-               TextField(
+              TextField(
                 style: TextStyle(color: Colors.black),
-                controller: _desciptionController,
+                controller: DesciptionController,
                 maxLines: null,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                   labelText: 'Description',
                 ),
               ),
-        
+
               SizedBox(height: 20,),
               TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: _amountController,
+                controller: AmountController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Cost',
@@ -165,7 +180,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Picked Date: ${DateFormat('dd MMM yyyy').format(_selectedDate)}',
+                      'Picked Date: ${DateFormat('dd MMM yyyy').format(SelectedDate)}',
                       style: const TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -180,7 +195,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   Theme(
                     data: ThemeData.dark(),
                     child: DropdownButton<String>(
-                      value: _selectedCategory,
+                      value: SelectedCategory,
                       dropdownColor: Colors.white,
                       items: ['Grocery', 'School', 'Entertainment', 'Bills', 'Others']
                           .map((label) => DropdownMenuItem(
@@ -190,7 +205,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           .toList(),
                       onChanged: (value) {
                         setState(() {
-                          _selectedCategory = value!;
+                          SelectedCategory = value!;
                         });
                       },
                     ),

@@ -8,12 +8,21 @@ class myDb{
   Future<Database> database()
   async{
     var directory = await getDatabasesPath();
-    String path=join(directory,'mydb.db');
-    _database=await openDatabase(path,version: 1,onCreate: (db, version) {
+    String path=join(directory,'myDB1.db');
+    _database=await openDatabase(path,version: 1,onCreate: (db, version)
+    {
       db.execute(
-        'CREATE Table expenses(id TEXT PRIMARY KEY ,title TEXT,description TEXT,imgUrl TEXT,amount INTEGER,date TEXT,category TEXT)'
+        'CREATE Table expenses('
+            'id TEXT PRIMARY KEY,'
+            'title TEXT,'
+            'description TEXT,'
+            'imageUrl TEXT,'
+            'amount INTEGER,'
+            'date TEXT,'
+            'category TEXT)'
       );
-    },);
+    },
+    );
 
   return _database!;
   }
@@ -25,11 +34,12 @@ class myDb{
     await db.insert('expenses',
         {
           'id':expense.id,
-      'title':expense.title,
+          'title':expense.title,
           'description': expense.description,
-      'amount':expense.amount,
-      'date':expense.date.toIso8601String(),
-      'category':expense.category
+          'amount':expense.amount,
+          'date':expense.date.toIso8601String(),
+          'category':expense.category,
+          'imageUrl':expense.imageUrl
     });
   }
 
@@ -71,7 +81,8 @@ class myDb{
           'title':expense.title,
           'amount':expense.amount,
           'date':expense.date.toIso8601String(),
-          'category':expense.category
+          'category':expense.category,
+          'imageUrl':expense.imageUrl
         },
     where: 'id=?',whereArgs: [expense.id]);
     print('Inserted');

@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:week_3_blp_1/theme/customThemes/contextThemeExtensions.dart';
 import '../../Models/expense.dart';
+import '../../Widget/IconButton.dart';
 import '../../main.dart';
 import '../../presentation/cubit/expense_cubit.dart';
+import 'EditExpense.dart';
 
 class ExpenseDetailsScreen extends StatefulWidget {
   final Expense expense;
@@ -21,186 +27,136 @@ class ExpenseDetailsScreen extends StatefulWidget {
 }
 
 class _ExpenseDetailsScreenState extends State<ExpenseDetailsScreen> {
-  final _nameController = TextEditingController();
-  final _amountController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
-  String _selectedCategory = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _nameController.text = widget.expense.title;
-    _amountController.text = widget.expense.amount.toString();
-    _selectedDate = widget.expense.date;
-    _selectedCategory = widget.expense.category;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text('Expense Details', style: TextStyle(color: textWhite, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.black,
-        leading: const BackButton(color: Colors.white),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+      bottomNavigationBar:Container(
+        margin: EdgeInsets.symmetric(horizontal: 5,vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: tileColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Column(
-                children: [
-                  _buildRow(Icons.task_alt, 'Task', widget.expense.title),
-                  _buildRow(Icons.money, 'Cost', widget.expense.amount.toString()),
-                  _buildRow(Icons.calendar_month, 'Date', DateFormat('dd MMM yyyy').format(_selectedDate)),
-                  _buildRow(Icons.category, 'Category', widget.expense.category),
-                ],
+            Expanded(
+              flex: 2,
+              child: Container(
+                  margin: EdgeInsets.only(),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: context.appColors.primarySurfaceHighlighted,
+                      borderRadius: BorderRadius.only(topLeft:Radius.circular(20) ,bottomLeft: Radius.circular(20))
+                  ),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=>
+                              EditExpenseScreen(expense: widget.expense,onEdit: (editedExpense)
+                              {
+                                context.read<ExpenseCubit>().editExpense(editedExpense);
+                              }))
+                      );
+                    },
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Edit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () => _showEditDialog(context),
-                  child: Text('Edit', style: TextStyle(color: textWhite)),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<ExpenseCubit>().deleteExpense(widget.expense.id);
-                    widget.onDelete(); // Notify parent
-                    Navigator.pop(context);
-                  },
-                  child: Text('Delete', style: TextStyle(color: textBlack)),
-                ),
-              ],
+            Expanded(
+              flex: 1,
+              child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: context.appColors.primaryBackground,
+                      borderRadius: BorderRadius.only(topRight:Radius.circular(20) ,bottomRight: Radius.circular(20))
+                  ),
+                  child: InkWell(
+                    onTap: (){
+                      context.read<ExpenseCubit>().deleteExpense(widget.expense.id);
+                      widget.onDelete(); // Notify parent
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Delete',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  )
+              ),
             ),
           ],
+        ),
+      ),
+      backgroundColor: context.appColors.primarySurface,
+      appBar: AppBar(
+          backgroundColor: context.appColors.primarySurface,
+        title: Text('Expense Details', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: CustomIconButton(
+            color: Colors.white,
+            icon: CupertinoIcons.arrow_left,
+            onPressed: (){Navigator.pop(context);},
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: tileColor,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: widget.expense.imageUrl.isEmpty
+                      ? Image.asset(
+                    'assets/images/placeholder.png',
+                    fit: BoxFit.fill,
+                  )
+                      : Image.file(
+                    File(widget.expense.imageUrl),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(widget.expense.title,
+                    style: TextStyle(color: Colors.black,fontSize: 22),),
+                  Text("\$"+'${widget.expense.amount}',
+                    style: TextStyle(color: Colors.red,fontSize: 16),),
+                ],
+              ),
+              SizedBox(height: 10,),
+              Text(widget.expense.description,
+                style: TextStyle(color: Colors.black,fontSize: 16),),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Category: '+widget.expense.category,
+                    style: TextStyle(color: Colors.black45,fontSize: 14),),
+                  Text(
+                    DateFormat('yyyy-MM-dd').format(widget.expense.date),
+                    style: const TextStyle(color: Colors.black45, fontSize: 14),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildRow(IconData icon, String label, String value) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.white),
-        Text(' $label: ', style: TextStyle(color: textWhite, fontSize: 20)),
-        Text(value, style: const TextStyle(color: Colors.red, fontSize: 20)),
-      ],
-    );
-  }
-
-  void _showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.black,
-          title: Text('Edit', style: TextStyle(color: textWhite)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                style: const TextStyle(color: Colors.white),
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Task',
-                  labelStyle: TextStyle(color: textWhite),
-                ),
-              ),
-              TextField(
-                style: const TextStyle(color: Colors.white),
-                controller: _amountController,
-                decoration: InputDecoration(
-                  labelText: 'Cost',
-                  labelStyle: TextStyle(color: textWhite),
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Date: ${DateFormat('dd MMM yyyy').format(_selectedDate)}',
-                      style: TextStyle(color: textWhite),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      DateTime? picked = await showDatePicker(
-                        context: context,
-                        initialDate: _selectedDate,
-                        firstDate: DateTime(2005),
-                        lastDate: DateTime(2101),
-                      );
-                      if (picked != null) {
-                        setState(() {
-                          _selectedDate = picked;
-                        });
-                      }
-                    },
-                    child: Text('Select date', style: TextStyle(color: textBlack)),
-                  ),
-                ],
-              ),
-              Theme(
-                data: ThemeData.dark(),
-                child: DropdownButton<String>(
-                  value: _selectedCategory,
-                  dropdownColor: Colors.black,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedCategory = newValue!;
-                    });
-                  },
-                  items: <String>['Grocery', 'School', 'Entertainment', 'Bills', 'Others']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(color: textWhite)),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: TextStyle(color: textWhite)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              onPressed: () {
-                if (_nameController.text.isNotEmpty && _amountController.text.isNotEmpty) {
-                  final updatedExpense = Expense(
-                    id: widget.expense.id,
-                    title: _nameController.text,
-                    amount: double.parse(_amountController.text),
-                    date: _selectedDate,
-                    category: _selectedCategory, description: '', imageUrl: '',
-                  );
-
-                  context.read<ExpenseCubit>().editExpense(updatedExpense);
-                  widget.onEdit(updatedExpense); // Notify parent
-                  Navigator.pop(context); // Close dialog
-                }
-              },
-              child: Text('Save', style: TextStyle(color: textWhite)),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
